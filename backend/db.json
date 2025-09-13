@@ -87,7 +87,7 @@
       "description": "Hot coffee",
       "category": "bevereges",
       "price": 15,
-      "quantity": 5,
+      "quantity": 1,
       "image": "https://www.midwestliving.com/thmb/IDAVt2bgdkXXFVnSfBLib5ZdiUk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/p_R155216-2109416a825e4d4fbd03d6bc44d32ca3.jpg"
     }
   ],
@@ -97,6 +97,12 @@
       "productId": "1757739853065",
       "quantity": 10,
       "date": "2025-09-13T06:14:41.955Z"
+    },
+    {
+      "id": "1757798683661",
+      "productId": "1757752773398",
+      "quantity": 4,
+      "date": "2025-09-13T21:24:43.662Z"
     }
   ],
   "stockTransactions": [
