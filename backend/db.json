@@ -1,0 +1,125 @@
+{
+  "products": [
+    {
+      "id": "1757739853065",
+      "name": "Apples",
+      "description": "green apple",
+      "category": "Fruit",
+      "price": 5,
+      "quantity": 200,
+      "image": "https://www.foodformzansi.co.za/wp-content/uploads/2024/09/pexels-rpphotography-693794-scaled-e1726559663113.jpg"
+    },
+    {
+      "id": "1757743134982",
+      "name": "Chicken Wings",
+      "description": "spicy grilled chicken wings",
+      "category": "Meal",
+      "price": 50,
+      "quantity": 40,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTXqOcQCJoWlzKlaei-XXcrHzsy_uZNW6NgmA&s"
+    },
+    {
+      "id": "1757743240506",
+      "name": "Beef Burger",
+      "description": "Juicy beef patty with cheese",
+      "category": "Meal",
+      "price": 60,
+      "quantity": 25,
+      "image": "https://simplehomeedit.com/wp-content/uploads/2024/03/Homemade-Beef-Burgers-4.webp"
+    },
+    {
+      "id": "1757743460022",
+      "name": "Papa & Chicken Combo",
+      "description": "Fries served with fried chicken",
+      "category": "Meal",
+      "price": 65,
+      "quantity": 40,
+      "image": "https://tb-static.uber.com/prod/image-proc/processed_images/2e9aecf19405e34f941e4fa52716dfa1/fb86662148be855d931b37d6c1e5fcbe.webp"
+    },
+    {
+      "id": "1757743581725",
+      "name": "Sausage Roll",
+      "description": "Flaky pastry with sausage",
+      "category": "Snack",
+      "price": 20,
+      "quantity": 50,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwpzxhnGRgE7kZ-bAh0_KNQNDh-xlFsbEQPg&s"
+    },
+    {
+      "id": "1757743698419",
+      "name": "Garlic Bread",
+      "description": "Toasted garlic bread",
+      "category": "side",
+      "price": 12,
+      "quantity": 60,
+      "image": "https://thebusybaker.ca/wp-content/uploads/2018/08/easy-homemade-garlic-bread-fbig3-500x500.jpg"
+    },
+    {
+      "id": "1757743912012",
+      "name": "Orange Juice",
+      "description": "Freshly squeezed orange juice",
+      "category": "Drink",
+      "price": 25,
+      "quantity": 40,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS_k3dmXxGhAIYtpo1VDWy8SJi30wQqJ5J9Ig&s"
+    },
+    {
+      "id": "1757744019426",
+      "name": "Simba Salt & Vinegar Chips",
+      "description": "Classic tangy chips",
+      "category": "Snack",
+      "price": 15,
+      "quantity": 50,
+      "image": "https://cdn-prd-02.pnp.co.za/sys-master/images/h15/hc4/11241175220254/silo-product-image-v2-15Aug2023-180836-6009510809435-Straight_on-165093-771_515Wx515H"
+    },
+    {
+      "id": "1757752616657",
+      "name": "Ice cream cup",
+      "description": "Vanilla ice cream",
+      "category": "dessert",
+      "price": 20,
+      "quantity": 3,
+      "image": "https://media.istockphoto.com/id/1413060909/photo/various-flavors-ice-cream-scoops-in-cups-with-berries-on-table.jpg?s=612x612&w=0&k=20&c=zTsA5myEduDPogAsr07FUsba4PasfnJMRLoj_mWgTUE="
+    },
+    {
+      "id": "1757752773398",
+      "name": "Cappuccino",
+      "description": "Hot coffee",
+      "category": "bevereges",
+      "price": 15,
+      "quantity": 5,
+      "image": "https://www.midwestliving.com/thmb/IDAVt2bgdkXXFVnSfBLib5ZdiUk=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/p_R155216-2109416a825e4d4fbd03d6bc44d32ca3.jpg"
+    }
+  ],
+  "transactions": [
+    {
+      "id": "1757740041521",
+      "productId": "1757739853065",
+      "quantity": 10,
+      "date": "2025-09-13T06:14:41.955Z"
+    }
+  ],
+  "stockTransactions": [
+    {
+      "id": "1757752048252",
+      "productId": "1757739853065",
+      "productName": "Apples",
+      "quantity": 5,
+      "date": "2025-09-13T08:27:28.252Z"
+    },
+    {
+      "id": "1757752086890",
+      "productId": "1757739853065",
+      "productName": "Apples",
+      "quantity": 5,
+      "date": "2025-09-13T08:28:06.890Z"
+    },
+    {
+      "id": "1757794809940",
+      "productId": "1757743134982",
+      "productName": "Chicken Wings",
+      "quantity": 10,
+      "date": "2025-09-13T20:20:09.940Z"
+    }
+  ]
+}

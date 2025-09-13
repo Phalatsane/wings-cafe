@@ -1,0 +1,40 @@
+/* App.css */
+.app-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+}
+
+.navbar {
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  background: #f8e0f8; /* soft pink */
+}
+
+.nav-btn {
+  padding: 10px 15px;
+  border: none;
+  background-color: #ffb6c1; /* light pink */
+  color: #fff;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.3s;
+}
+
+.nav-btn:hover {
+  background-color: #ff69b4; /* hot pink */
+}
+
+.module-container {
+  flex: 1;
+  padding: 20px;
+}
+
+.footer {
+  text-align: center;
+  padding: 15px;
+  background-color: #ffe4e1; /* soft pink */
+  color: #333;
+}

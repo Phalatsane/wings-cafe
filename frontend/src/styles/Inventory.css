@@ -1,0 +1,49 @@
+.inventory {
+  background-color: #fff0f5; /* lavender blush */
+}
+
+.inventory h1 {
+  color: #d63384; /* bright pink */
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.inventory-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.inventory-table th, .inventory-table td {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+}
+
+.inventory-table th {
+  background-color: #ffe4e1; /* misty rose */
+  color: #d63384;
+}
+
+.inventory-table td {
+  background-color: #fff0f5;
+}
+
+.inventory-table input {
+  width: 60px;
+  padding: 5px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.inventory-table button {
+  padding: 5px 10px;
+  background-color: #d63384;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.inventory-table button:hover {
+  background-color: #ff77a9;
+}

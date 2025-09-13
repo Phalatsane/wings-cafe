@@ -1,0 +1,50 @@
+/* Container styling */
+.reporting-container {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #fff0f8; /* light pink background */
+  color: #4b004b; /* dark purple text */
+}
+
+/* Table styling */
+.reporting-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px rgba(255, 192, 203, 0.3); /* soft pink shadow */
+}
+
+/* Table header */
+.reporting-table thead tr {
+  background: linear-gradient(90deg, #ffb6c1, #ff69b4); /* pink gradient */
+  color: #fff;
+  font-weight: bold;
+  text-align: left;
+}
+
+/* Table cells */
+.reporting-table td,
+.reporting-table th {
+  border: 1px solid #ff69b4;
+  padding: 10px;
+}
+
+/* Hover effect for rows */
+.reporting-table tbody tr:hover {
+  background-color: #ffe4f0;
+}
+
+/* Table captions/headings */
+.reporting-table-caption {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #d10082;
+}
+
+/* Center empty table text */
+.reporting-table tbody td[colspan] {
+  text-align: center;
+  font-style: italic;
+  color: #a00070;
+}
