@@ -1,18 +1,29 @@
+// backend/server.js
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs-extra');
 const path = require('path');
 
 const app = express();
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
-app.use(cors());
+// CORS setup: allow frontend URL or all during development
+const FRONTEND_URL = process.env.FRONTEND_URL || '*';
+app.use(cors({
+  origin: FRONTEND_URL === '*' ? true : FRONTEND_URL,
+  methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type'],
+}));
+
 app.use(express.json());
 
 const dbPath = path.join(__dirname, 'db.json');
 
 // --- Helper functions ---
 const readDB = async () => {
+  if (!(await fs.pathExists(dbPath))) {
+    await fs.writeJson(dbPath, { products: [], transactions: [], stockTransactions: [] }, { spaces: 2 });
+  }
   const data = await fs.readJson(dbPath);
   return {
     products: data.products || [],
@@ -30,17 +41,26 @@ app.get('/', (req, res) => {
   res.send('Welcome to Wings Cafe Backend API 🚀');
 });
 
+// --- COMBINED API FOR DASHBOARD ---
+app.get('/api/data', async (req, res) => {
+  try {
+    const data = await readDB();
+    res.json({ products: data.products, transactions: data.transactions });
+  } catch (err) {
+    console.error('/api/data error', err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 // --- PRODUCTS ---
-// Get all products
 app.get('/products', async (req, res) => {
   const data = await readDB();
   res.json(data.products);
 });
 
-// Add new product
 app.post('/products', async (req, res) => {
   const data = await readDB();
-  const { name, description, category, price, quantity, image } = req.body;
+  const { name, description, category, price = 0, quantity = 0, image = '' } = req.body;
   const id = Date.now().toString();
   const newProduct = { id, name, description, category, price: Number(price), quantity: Number(quantity), image };
   data.products.push(newProduct);
@@ -48,23 +68,22 @@ app.post('/products', async (req, res) => {
   res.json({ message: 'Product added', product: newProduct });
 });
 
-// Update product
 app.patch('/products/:id', async (req, res) => {
   const data = await readDB();
   const product = data.products.find(p => p.id === req.params.id);
   if (!product) return res.status(404).json({ error: 'Product not found' });
 
-  Object.assign(product, {
-    ...req.body,
-    price: req.body.price !== undefined ? Number(req.body.price) : product.price,
-    quantity: req.body.quantity !== undefined ? Number(req.body.quantity) : product.quantity
-  });
+  product.name = req.body.name ?? product.name;
+  product.description = req.body.description ?? product.description;
+  product.category = req.body.category ?? product.category;
+  if (req.body.price !== undefined) product.price = Number(req.body.price);
+  if (req.body.quantity !== undefined) product.quantity = Number(req.body.quantity);
+  if (req.body.image !== undefined) product.image = req.body.image;
 
   await writeDB(data);
   res.json({ message: 'Product updated', product });
 });
 
-// Delete product
 app.delete('/products/:id', async (req, res) => {
   const data = await readDB();
   data.products = data.products.filter(p => p.id !== req.params.id);
@@ -80,8 +99,7 @@ app.patch('/products/:id/add-stock', async (req, res) => {
     if (!product) return res.status(404).json({ error: 'Product not found' });
 
     const quantity = Number(req.body.quantity);
-    if (isNaN(quantity) || quantity <= 0)
-      return res.status(400).json({ error: 'Invalid quantity' });
+    if (isNaN(quantity) || quantity <= 0) return res.status(400).json({ error: 'Invalid quantity' });
 
     product.quantity += quantity;
 
@@ -97,18 +115,17 @@ app.patch('/products/:id/add-stock', async (req, res) => {
     await writeDB(data);
     res.json({ message: 'Stock added', stockTransaction });
   } catch (err) {
-    console.error(err);
+    console.error('add-stock error', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
 
-// Get stock transactions
 app.get('/stock-transactions', async (req, res) => {
   try {
     const data = await readDB();
-    res.json(data.stockTransactions);
+    res.json(data.stockTransactions || []);
   } catch (err) {
-    console.error(err);
+    console.error('stock-transactions error', err);
     res.status(500).json({ error: 'Server error' });
   }
 });
@@ -123,7 +140,6 @@ app.get('/sales', async (req, res) => {
   res.json(sales);
 });
 
-// Record sale
 app.post('/sales', async (req, res) => {
   const { productId, quantity } = req.body;
   const data = await readDB();
@@ -139,33 +155,36 @@ app.post('/sales', async (req, res) => {
   res.json({ message: 'Sale recorded', sale });
 });
 
-// Edit sale
 app.patch('/sales/:id', async (req, res) => {
-  const { quantity, productId } = req.body;
-  const data = await readDB();
-  const sale = data.transactions.find(s => s.id === req.params.id);
-  if (!sale) return res.status(404).json({ error: 'Sale not found' });
+  try {
+    const { quantity, productId } = req.body;
+    const data = await readDB();
+    const sale = data.transactions.find(s => s.id === req.params.id);
+    if (!sale) return res.status(404).json({ error: 'Sale not found' });
 
-  // Restore old product stock
-  const oldProduct = data.products.find(p => p.id === sale.productId);
-  if (oldProduct) oldProduct.quantity += sale.quantity;
+    // revert old sale from old product
+    const oldProduct = data.products.find(p => p.id === sale.productId);
+    if (oldProduct) oldProduct.quantity += sale.quantity;
 
-  // Update sale
-  sale.quantity = Number(quantity);
-  sale.productId = productId || sale.productId;
-  sale.date = new Date().toISOString();
+    // update sale details
+    sale.quantity = Number(quantity);
+    sale.productId = productId ?? sale.productId;
+    sale.date = new Date().toISOString();
 
-  // Deduct new product stock
-  const newProduct = data.products.find(p => p.id === sale.productId);
-  if (!newProduct) return res.status(404).json({ error: 'Product not found' });
-  if (newProduct.quantity < sale.quantity) return res.status(400).json({ error: 'Insufficient stock' });
-  newProduct.quantity -= sale.quantity;
+    // apply sale to new product
+    const newProduct = data.products.find(p => p.id === sale.productId);
+    if (!newProduct) return res.status(404).json({ error: 'Product not found' });
+    if (newProduct.quantity < sale.quantity) return res.status(400).json({ error: 'Insufficient stock' });
+    newProduct.quantity -= sale.quantity;
 
-  await writeDB(data);
-  res.json({ message: 'Sale updated', sale });
+    await writeDB(data);
+    res.json({ message: 'Sale updated', sale });
+  } catch (err) {
+    console.error('patch sale error', err);
+    res.status(500).json({ error: 'Server error' });
+  }
 });
 
-// Delete sale
 app.delete('/sales/:id', async (req, res) => {
   const data = await readDB();
   const sale = data.transactions.find(s => s.id === req.params.id);
@@ -179,4 +198,5 @@ app.delete('/sales/:id', async (req, res) => {
   res.json({ message: 'Sale deleted' });
 });
 
-app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT}`));
+// --- START SERVER ---
+app.listen(PORT, () => console.log(`Backend running on http://localhost:${PORT} (PORT=${PORT})`));
